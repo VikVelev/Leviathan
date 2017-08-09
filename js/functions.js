@@ -32,8 +32,12 @@ function clicked(d) {
         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
         //the border looks too big when zoomed
         .style("stroke-width", 1.5 / k + "px");
-    console.log(d);
 
+    d3.select("svg").on("mousedown.log", function() {
+        console.log("Country: " + d.properties.COUNTRY);
+        console.log("Info: " + d.properties.LABEL);
+        console.log("Category: " + d.properties.CATEGORY)
+    });
 }
 
 function renderMap(id) {
@@ -45,10 +49,11 @@ function renderMap(id) {
         .attr("height", height)
         .attr("id", "mainMap");
 
-    g = svg.append("g");
+    g = svg.append("g")
 
     d3.json("GeoJSON/" + id + ".geojson", function(error, map) {
         $("svg").hide();
+
         g.selectAll("path")
             .data(map.features)
             .enter()
