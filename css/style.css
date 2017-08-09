@@ -1,0 +1,13 @@
+#mainMap {
+    stroke: #666;
+    stroke-width: 1px;
+    fill: white;
+    height: 100%;
+    width: 100%;
+}
+
+.sideBar {
+    width: 40%;
+    height: 100%;
+    background-color: #49F;
+}
