@@ -1,3 +1,6 @@
+function getYear(id) {
+    return id.toString().slice(0, 4);
+}
 // function to check if it's been clicked for zooming
 function clicked(d) {
 
@@ -44,26 +47,45 @@ function renderMap(id) {
 
     $("svg").remove();
 
-    svg = d3.select("body").append("svg")
+    svg = d3.select("body")
+        .append("svg")
+        //responsive SVG needs these 2 attributes and no width and height attr
+        .attr("viewBox", "0 0 " + width.toString() + " " + height.toString())
+        //class to make it responsive
+        .classed("svg-content-responsive", true)
         .attr("width", width)
         .attr("height", height)
         .attr("id", "mainMap");
 
-    g = svg.append("g")
+    g = svg.append("g");
 
-    d3.json("GeoJSON/" + id + ".geojson", function(error, map) {
-        $("svg").hide();
 
-        g.selectAll("path")
-            .data(map.features)
-            .enter()
-            .append("path")
-            .attr("d", path)
-            .on("click", clicked);
-        $("svg").fadeIn(200);
+    d3.json("GeoJSON/" + id, function(error, map) {
+
+        if (error) {
+            return false;
+        } else {
+            $("svg").hide();
+            g.selectAll("path")
+                .data(map.features)
+                .enter()
+                .append("path")
+                .attr("d", path)
+                .on("click", clicked);
+            $("svg").fadeIn(200);
+        }
     });
 }
 
-function getYear(id) {
-    return id.toString().slice(0, 4);
+function resizeMap() {
+
+    // adjust things when the window size changes
+    let widthM = $(window).width();
+    widthM = widthM - parseInt($("svg").css("marginLeft")) - parseInt($("svg").css("marginRight"));
+    let mapRatio = widthM > height ? height / widthM : widthM / height;
+
+    let heightM = widthM * mapRatio;
+
+    // resize the map container
+    svg.attr('width', widthM).attr('height', heightM);
 }
