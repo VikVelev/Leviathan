@@ -3,4 +3,5 @@ let width = $(window).width();
 let height = $(window).height();
 let defaultcolor = "white";
 let centered;
-let svg, g;
+let svg, g, currentState;
+let outOfSVG;
