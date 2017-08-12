@@ -13,7 +13,8 @@ function clicked(d) {
     if (currentState == centered) {
         $("path").css({ "fill": defaultcolor });
     } else {
-        $(this).css({ "fill": "orange" });
+        $(this).css({ "fill": "#009dff" });
+        $(this).css({ "box-shadow": "inset 0 10px 10px 0 #666" });
     }
 
     let x, y, k;
@@ -26,15 +27,17 @@ function clicked(d) {
         y = centroid[1];
         k = 4;
         centered = currentState;
+        toggleSideBar();
     } else {
         if (hoveredOld) {
-            $(this).css({ "fill": "#ffbd00" });
+            $(this).css({ "fill": "#c9f2ff" });
         }
         x = width / 2;
         y = height / 2;
         k = 1;
         currentState = undefined;
         centered = null;
+        toggleSideBar();
     }
 
     g.selectAll("path")
@@ -53,12 +56,13 @@ function renderMap(id) {
 
     $("svg").remove();
 
-    svg = d3.select("body")
+    svg = d3.select(".container")
         .append("svg")
         //responsive SVG needs these 2 attributes and no width and height attr
-        .attr("viewBox", "0 0 " + width.toString() + " " + height.toString())
+        .attr("viewBox", "0 0 " + width + " " + height)
         //class to make it responsive
         .classed("svg-content-responsive", true)
+        //.attr("preserveAspectRatio", "xMinYMin")
         .attr("width", width)
         .attr("height", height)
         .attr("id", "mainMap");
@@ -120,28 +124,26 @@ function showInfo() {
 
     if (hoveredOld != this) {
         if (currentState !== undefined) {
-            $(clickedDOM).css({ "fill": "orange" })
+            $(clickedDOM).css({ "fill": "#009dff" })
         }
 
-        $(this).css({ "fill": "#ffbd00" });
+        $(this).css({ "fill": "#c9f2ff" });
 
     } else if (hoveredOld == this && outOfSVG) {
 
-        $(this).css({ "fill": "#ffbd00" });
+        $(this).css({ "fill": "#c9f2ff" });
 
     } else {
         if (currentState !== undefined) {
-            $(clickedDOM).css({ "fill": "orange" })
+            $(clickedDOM).css({ "fill": "#009dff" })
         }
 
         hoveredOld = null;
     }
 
     let currentlyClickedState = currentState !== undefined ? currentState.properties.LABEL : "none";
-    let info = $(this).attr("country");
-
-    console.log(currentlyClickedState);
-    console.log(info);
+    let info = !outOfSVG ? $(this).attr("country") : null;
+    console.log(info ? info : "");
     hoveredOld = this;
     outOfSVG = false;
 }
@@ -149,4 +151,14 @@ function showInfo() {
 function mouseOut() {
     outOfSVG = true;
     showInfo();
+}
+
+function toggleSideBar() {
+    if (sideBarHidden) {
+        $(".sideBar").animate({ "width": "250" });
+        sideBarHidden = false;
+    } else {
+        $(".sideBar").animate({ "width": "0" });
+        sideBarHidden = true;
+    }
 }
