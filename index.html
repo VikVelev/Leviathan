@@ -2,17 +2,17 @@
 <html lang="en">
 
 <head>
-    <title>Leviathan - an interactive website</title>
+    <title>Leviathan - an interactive map.</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="css/style.css" rel="stylesheet">
-    <link href="css/themes/odometer-theme-default.css" rel="stylesheet">
+    <link href="css/loading.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.1/rangeslider.min.css" rel="stylesheet">
 </head>
 
 <body>
     <div class="container">
-        <div id="tooltip"></div>
+        <div id="tooltip-container"> </div>
         <div class="input">
             <input class="input" type="range" min="1789" max="2017" step="1" value="1789" data-orientation="vertical">
         </div>
@@ -20,11 +20,15 @@
             <div class="title"></div>
             <div class="description"></div>
         </div>
-        <img id="title_img" src="src/Leviathan_Textv2.png">
+        <div class="input-output">9999</div>
+        <div class="loading">
+            <img id="title_img" src="src/Leviathan_Textv2.png">
+            <div class="loader"></div>
+        </div>
     </div>
 </body>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.12/jquery.mousewheel.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.min.js"></script>
 <script src="https://d3js.org/topojson.v1.min.js"></script>
@@ -32,7 +36,6 @@
 <script src="https://d3js.org/d3.v3.min.js"></script>
 <script src="/js/globalVariables.js"></script>
 <script src="/js/functions.js"></script>
-<script src="/js/odometer.min.js"></script>
 <script src="/js/events.js"></script>
 <script src="/js/map.js"></script>
 <script src="/js/ui.js"></script>

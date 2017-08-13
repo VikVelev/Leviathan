@@ -26,4 +26,8 @@ $('input[type="range"]').change(function() {
     }
 });
 
-$(window).resize(resizeMap);
+$(window).on("DOMContentLoaded", function() {
+    setTimeout(function() {
+        $(".loading").fadeOut(400);
+    }, 1500);
+});

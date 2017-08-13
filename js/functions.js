@@ -3,6 +3,44 @@ function getYear(id) {
 }
 // function to check if it's been clicked for zooming
 
+function renderMap(id) {
+
+    $("svg").remove();
+
+    svg = d3.select(".container")
+        .append("svg")
+        //responsive SVG needs these 2 attributes and no width and height attr
+        .attr("viewBox", "0 0 " + width + " " + height)
+        //class to make it responsive
+        .classed("svg-content-responsive", true)
+        //.attr("preserveAspectRatio", "xMinYMin")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("id", "mainMap");
+
+    g = svg.append("g");
+
+
+    d3.json("GeoJSON/" + id, function(error, map) {
+        if (error) {
+            return false;
+        } else {
+            $("svg").hide();
+            g.selectAll("path")
+                .data(map.features)
+                .enter()
+                .append("path")
+                .attr("d", path)
+                .attr("class", "states")
+                .attr("country", function(map) { return map.properties.LABEL + ", " + map.properties.COUNTRY; })
+                .on("click", clicked)
+                .on("mouseout", mouseOut)
+                .on("mouseover", showInfo);
+            $("svg").fadeIn(200);
+        }
+    });
+}
+
 function clicked(d) {
 
     currentState = d;
@@ -40,6 +78,7 @@ function clicked(d) {
         if (hoveredOld) {
             $(this).css({ "fill": "#DDD" });
         }
+
         currentState = undefined;
         centered = null;
 
@@ -48,6 +87,10 @@ function clicked(d) {
         k = 1;
 
         $(".sideBar").animate({ "width": "0" }, animationLength);
+
+        $(".title").fadeOut(100);
+        $(".description").fadeOut(100);
+
         sideBarHidden = true;
     }
 
@@ -82,45 +125,6 @@ function clicked(d) {
                 }).fadeIn(200);
             }
             wikiData = data;
-
-        }
-    });
-}
-
-function renderMap(id) {
-
-    $("svg").remove();
-
-    svg = d3.select(".container")
-        .append("svg")
-        //responsive SVG needs these 2 attributes and no width and height attr
-        .attr("viewBox", "0 0 " + width + " " + height)
-        //class to make it responsive
-        .classed("svg-content-responsive", true)
-        //.attr("preserveAspectRatio", "xMinYMin")
-        .attr("width", width)
-        .attr("height", height)
-        .attr("id", "mainMap");
-
-    g = svg.append("g");
-
-
-    d3.json("GeoJSON/" + id, function(error, map) {
-        if (error) {
-            return false;
-        } else {
-            $("svg").hide();
-            g.selectAll("path")
-                .data(map.features)
-                .enter()
-                .append("path")
-                .attr("d", path)
-                .attr("class", "states")
-                .attr("country", function(map) { return map.properties.LABEL + ", " + map.properties.COUNTRY; })
-                .on("click", clicked)
-                .on("mouseover", showInfo)
-                .on("mouseout", mouseOut);
-            $("svg").fadeIn(200);
         }
     });
 }
@@ -155,6 +159,7 @@ function showInfo() {
     $("path").css({ "fill": defaultcolor });
 
     if (hoveredOld != this) {
+
         if (currentState !== undefined) {
             $(clickedDOM).css({ "fill": "#ff8a00" });
         }
@@ -166,6 +171,7 @@ function showInfo() {
         $(this).css({ "fill": "#DDD" });
 
     } else {
+
         if (currentState !== undefined) {
             $(clickedDOM).css({ "fill": "#ff8a00" });
         }
@@ -180,6 +186,7 @@ function showInfo() {
 }
 
 function mouseOut() {
+
     outOfSVG = true;
     showInfo();
 }
