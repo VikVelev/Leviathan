@@ -12,8 +12,8 @@ function clicked(d) {
     if (currentState == centered) {
         $("path").css({ "fill": defaultcolor });
     } else {
-        $(this).css({ "fill": "#009dff" });
-        $(this).css({ "box-shadow": "inset 0 10px 10px 0 #666" });
+        $(this).css({ "fill": "#ff8a00" });
+        $(this).css({ "box-shadow": "inset 10px 10px 10px 10px #666" });
     }
 
     let x, y, k;
@@ -58,22 +58,24 @@ function clicked(d) {
         .duration(750)
         //black magic(not really) that centers the state you clicked on
         //todo optimize translation for bigger states
-        //.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
 
     //the border looks too big when zoomed
-    //.style("stroke-width", 1 / k + "px");
+    .style("stroke-width", 1 / k + "px");
 
     let wikiData;
     let LABEL = currentState != undefined ? currentState.properties.LABEL.toString().replace(/ /g, "_ ") : "";
 
     $.ajax({
-        url: 'https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&titles=' + LABEL,
+        url: 'https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&formatversion=2&titles=' + LABEL,
         dataType: "jsonp",
         type: "get",
         success: function(data) {
-            for (var id in data.query.pages) {
-                $(".title").text(currentState.properties.LABEL);
-                $(".description").text(data.query.pages[id].revisions[0]["*"]);
+            for (var id in data.query != undefined ? data.query.pages : "") {
+                $(".title,.description").fadeOut(100, function() {
+                    $(".title").text(currentState.properties.LABEL);
+                    $(".description").text(data.query.pages[id].revisions[0].content);
+                }).fadeIn(200);
             }
             wikiData = data;
         }
@@ -149,7 +151,7 @@ function showInfo() {
 
     if (hoveredOld != this) {
         if (currentState !== undefined) {
-            $(clickedDOM).css({ "fill": "#009dff" })
+            $(clickedDOM).css({ "fill": "#ff8a00" });
         }
 
         $(this).css({ "fill": "#c9f2ff" });
@@ -160,7 +162,7 @@ function showInfo() {
 
     } else {
         if (currentState !== undefined) {
-            $(clickedDOM).css({ "fill": "#009dff" })
+            $(clickedDOM).css({ "fill": "#ff8a00" });
         }
 
         hoveredOld = null;
