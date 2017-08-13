@@ -1,6 +1,8 @@
 //trying to get other maps
-$(".input").change(function() {
-    currentJSON = $(".input").val();
+$('input[type="range"]').change(function() {
+    $(".sideBar").animate({ "width": "0" }, animationLength);
+
+    currentJSON = $('input[type="range"').val();
     let currentJSON_Int = parseInt(currentJSON);
 
     if (/^\d+$/.test(currentJSON)) {
@@ -25,29 +27,3 @@ $(".input").change(function() {
 });
 
 $(window).resize(resizeMap);
-
-$('.odometer').mousewheel(function(event) {
-
-    $(".sideBar").animate({ "width": "0" });
-    sideBarHidden = true;
-
-    currentJSON = parseInt(currentJSON);
-    currentJSON += parseInt(event.deltaY / 2);
-
-    if (currentJSON < 1789) {
-        currentJSON = 1789;
-        console.log("The US didn't exist back then.");
-    } else if (currentJSON > 1959) {
-        currentJSON = 1959;
-        console.log("There has been no changes since 1959.");
-    } else if (!renderMap(currentJSON)) {
-        while (doesFileExist("/GeoJSON/" + currentJSON) != true) {
-            currentJSON--;
-        }
-    } else {
-        console.log(currentJSON + "rendered.");
-    }
-    renderMap(currentJSON);
-    $('.odometer').html(currentJSON);
-
-});

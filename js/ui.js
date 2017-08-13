@@ -1,5 +1,11 @@
 $(".sideBar").width(0);
 
-$('.odometer').html(parseInt(currentJSON));
+$('input[type="range"]').rangeslider({
+    polyfill: false,
+    onInit: function() {
 
-$('input[type="range"]').rangeslider();
+    },
+    onSlide: function(position, value) {
+
+    }
+});

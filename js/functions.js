@@ -38,7 +38,7 @@ function clicked(d) {
     } else {
 
         if (hoveredOld) {
-            $(this).css({ "fill": "#c9f2ff" });
+            $(this).css({ "fill": "#DDD" });
         }
         currentState = undefined;
         centered = null;
@@ -74,10 +74,15 @@ function clicked(d) {
             for (var id in data.query != undefined ? data.query.pages : "") {
                 $(".title,.description").fadeOut(100, function() {
                     $(".title").text(currentState.properties.LABEL);
-                    $(".description").text(data.query.pages[id].revisions[0].content);
+                    try {
+                        $(".description").text(data.query.pages[id].revisions[0].content);
+                    } catch (ex) {
+                        console.log("There was an error, please contact me at github.com/VikVelev");
+                    }
                 }).fadeIn(200);
             }
             wikiData = data;
+
         }
     });
 }
@@ -154,11 +159,11 @@ function showInfo() {
             $(clickedDOM).css({ "fill": "#ff8a00" });
         }
 
-        $(this).css({ "fill": "#c9f2ff" });
+        $(this).css({ "fill": "#DDD" });
 
     } else if (hoveredOld == this && outOfSVG) {
 
-        $(this).css({ "fill": "#c9f2ff" });
+        $(this).css({ "fill": "#DDD" });
 
     } else {
         if (currentState !== undefined) {
