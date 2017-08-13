@@ -7,12 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/themes/odometer-theme-default.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.1/rangeslider.min.css" rel="stylesheet">
 </head>
 
 <body>
     <div class="container">
         <div id="tooltip"></div>
-        <input class="input" type="range" min="1789" max="2017" step="1" value="1789" data-orientation="vertical">
+        <input class="input" type="range" min="1789" // default 0 max="2017" step="1" value="1789" data-orientation="vertical">
         <div class="sideBar">
             <div class="title"></div>
             <div class="description"></div>
@@ -26,8 +27,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.1/rangeslider.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-mousewheel/3.1.12/jquery.mousewheel.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.10/handlebars.min.js"></script>
-<script src="https://d3js.org/d3.v3.min.js"></script>
 <script src="https://d3js.org/topojson.v1.min.js"></script>
+<script src="https://d3js.org/d3.v3.min.js"></script>
 <script src="/js/functions.js"></script>
 <script src="/js/odometer.min.js"></script>
 <script src="/js/events.js"></script>
