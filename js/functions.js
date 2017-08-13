@@ -3,11 +3,10 @@ function getYear(id) {
 }
 // function to check if it's been clicked for zooming
 
-let clickedDOM;
-
 function clicked(d) {
 
     currentState = d;
+
     clickedDOM = this;
     $("path").css({ "fill": defaultcolor });
     if (currentState == centered) {
@@ -21,23 +20,35 @@ function clicked(d) {
 
     if (currentState && centered !== currentState) {
 
-        currentState = d;
         let centroid = path.centroid(currentState);
+
+        //console.log(centroid);
+
         x = centroid[0];
         y = centroid[1];
+
+        //console.log(x, y);
+
         k = 4;
+
         centered = currentState;
-        toggleSideBar();
+
+        $(".sideBar").animate({ "width": "250" }, animationLength);
+        sideBarHidden = false;
     } else {
+
         if (hoveredOld) {
             $(this).css({ "fill": "#c9f2ff" });
         }
+        currentState = undefined;
+        centered = null;
+
         x = width / 2;
         y = height / 2;
         k = 1;
-        currentState = undefined;
-        centered = null;
-        toggleSideBar();
+
+        $(".sideBar").animate({ "width": "0" }, animationLength);
+        sideBarHidden = true;
     }
 
     g.selectAll("path")
@@ -47,9 +58,26 @@ function clicked(d) {
         .duration(750)
         //black magic(not really) that centers the state you clicked on
         //todo optimize translation for bigger states
-        .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
-        //the border looks too big when zoomed
-        .style("stroke-width", 1.5 / k + "px");
+        //.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+
+    //the border looks too big when zoomed
+    //.style("stroke-width", 1 / k + "px");
+
+    let wikiData;
+    let LABEL = currentState != undefined ? currentState.properties.LABEL.toString().replace(/ /g, "_ ") : "";
+
+    $.ajax({
+        url: 'https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&titles=' + LABEL,
+        dataType: "jsonp",
+        type: "get",
+        success: function(data) {
+            for (var id in data.query.pages) {
+                $(".title").text(currentState.properties.LABEL);
+                $(".description").text(data.query.pages[id].revisions[0]["*"]);
+            }
+            wikiData = data;
+        }
+    });
 }
 
 function renderMap(id) {
@@ -66,7 +94,6 @@ function renderMap(id) {
         .attr("width", width)
         .attr("height", height)
         .attr("id", "mainMap");
-
 
     g = svg.append("g");
 
@@ -116,8 +143,6 @@ function doesFileExist(urlToFile) {
     }
 }
 
-let hoveredOld;
-
 function showInfo() {
 
     $("path").css({ "fill": defaultcolor });
@@ -142,8 +167,7 @@ function showInfo() {
     }
 
     let currentlyClickedState = currentState !== undefined ? currentState.properties.LABEL : "none";
-    let info = !outOfSVG ? $(this).attr("country") : null;
-    console.log(info ? info : "");
+
     hoveredOld = this;
     outOfSVG = false;
 }
@@ -153,12 +177,20 @@ function mouseOut() {
     showInfo();
 }
 
-function toggleSideBar() {
-    if (sideBarHidden) {
-        $(".sideBar").animate({ "width": "250" });
-        sideBarHidden = false;
-    } else {
-        $(".sideBar").animate({ "width": "0" });
-        sideBarHidden = true;
-    }
+function getCoords(elem) { // crossbrowser version
+    var box = elem.getBoundingClientRect();
+
+    var body = document.body;
+    var docEl = document.documentElement;
+
+    var scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
+    var scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
+
+    var clientTop = docEl.clientTop || body.clientTop || 0;
+    var clientLeft = docEl.clientLeft || body.clientLeft || 0;
+
+    var top = box.top + scrollTop - clientTop;
+    var left = box.left + scrollLeft - clientLeft;
+
+    return { top: Math.round(top), left: Math.round(left) };
 }

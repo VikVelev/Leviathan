@@ -95,3 +95,21 @@ body {
     line-height: 30px;
     box-shadow: 0 0 3px black;
 }
+
+.title {
+    color: white;
+    font-size: 1.5em;
+    text-align: center;
+    margin: 20px;
+}
+
+.description {
+    text-align: center;
+    font-size: 0.8em;
+    color: white;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 20px;
+    overflow: scroll;
+    overflow-x: hidden;
+}

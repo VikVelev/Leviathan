@@ -6,3 +6,6 @@ let centered;
 let svg, g, currentState;
 let outOfSVG;
 let sideBarHidden = true;
+let animationLength = 300;
+let clickedDOM;
+let hoveredOld;

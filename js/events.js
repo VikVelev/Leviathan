@@ -41,15 +41,13 @@ $('.odometer').mousewheel(function(event) {
         currentJSON = 1959;
         console.log("There has been no changes since 1959.");
     } else if (!renderMap(currentJSON)) {
-        setTimeout(function() {
-            while (doesFileExist("/GeoJSON/" + currentJSON) != true) {
-                currentJSON--;
-            }
-        }, 500);
+        while (doesFileExist("/GeoJSON/" + currentJSON) != true) {
+            currentJSON--;
+        }
     } else {
         console.log(currentJSON + "rendered.");
     }
-
     renderMap(currentJSON);
     $('.odometer').html(currentJSON);
+
 });
