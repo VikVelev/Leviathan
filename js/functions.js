@@ -20,6 +20,18 @@ function renderMap(id) {
 
     g = svg.append("g");
 
+    if (id < 1789) {
+        id = 1789;
+        console.log("The US didn't exist back then.");
+    } else if (id > 1959) {
+        id = 1959;
+        console.log("There has been no changes since 1959.");
+    } else {
+        while (doesFileExist("/GeoJSON/" + id) != true) {
+            id--;
+        }
+    }
+
     d3.json("GeoJSON/" + id, function(error, map) {
         if (error) {
             return false;
