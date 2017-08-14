@@ -29,5 +29,12 @@ $('input[type="range"]').change(function() {
 $(window).on("DOMContentLoaded", function() {
     setTimeout(function() {
         $(".loading").fadeOut(400);
+        setTimeout(function() {
+            $(".loading").remove();
+        }, 400);
     }, 1500);
+});
+
+$(window).on("mousemove", function() {
+    $("#tooltip-container").css({ top: event.clientY - 45, left: event.clientX + 5, position: 'absolute' });
 });

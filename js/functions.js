@@ -70,8 +70,11 @@ function clicked(d) {
         k = 4;
 
         centered = currentState;
+        zoomedIn = true;
 
         $(".sideBar").animate({ "width": "250" }, animationLength);
+        $("#tooltip-container").hide();
+
         sideBarHidden = false;
     } else {
 
@@ -85,7 +88,7 @@ function clicked(d) {
         x = width / 2;
         y = height / 2;
         k = 1;
-
+        zoomedIn = false;
         $(".sideBar").animate({ "width": "0" }, animationLength);
 
         $(".title").fadeOut(100);
@@ -155,27 +158,33 @@ function doesFileExist(urlToFile) {
 }
 
 function showInfo() {
-
     $("path").css({ "fill": defaultcolor });
-
+    $("#tooltip-container").hide();
+    if (outOfSVG) {
+        $("#tooltip-container").hide();
+    } else
     if (hoveredOld != this) {
-
-        if (currentState !== undefined) {
+        if (zoomedIn) {
             $(clickedDOM).css({ "fill": "#ff8a00" });
+            $("#tooltip-container").hide();
+        } else {
+            $("#tooltip-container").show();
+            $(".tooltip-text").text($(this).attr("country"));
         }
-
+        //Hovered
         $(this).css({ "fill": "#DDD" });
 
     } else if (hoveredOld == this && outOfSVG) {
-
+        //Hovered out of the svg
         $(this).css({ "fill": "#DDD" });
+        $("#tooltip-container").hide();
 
     } else {
-
-        if (currentState !== undefined) {
+        //not hovered => at the begining of the function it's filled with default color;
+        if (zoomedIn) {
             $(clickedDOM).css({ "fill": "#ff8a00" });
+            $("#tooltip-container").hide();
         }
-
         hoveredOld = null;
     }
 
@@ -186,25 +195,7 @@ function showInfo() {
 }
 
 function mouseOut() {
-
+    console.log("Out");
     outOfSVG = true;
     showInfo();
-}
-
-function getCoords(elem) { // crossbrowser version
-    var box = elem.getBoundingClientRect();
-
-    var body = document.body;
-    var docEl = document.documentElement;
-
-    var scrollTop = window.pageYOffset || docEl.scrollTop || body.scrollTop;
-    var scrollLeft = window.pageXOffset || docEl.scrollLeft || body.scrollLeft;
-
-    var clientTop = docEl.clientTop || body.clientTop || 0;
-    var clientLeft = docEl.clientLeft || body.clientLeft || 0;
-
-    var top = box.top + scrollTop - clientTop;
-    var left = box.left + scrollLeft - clientLeft;
-
-    return { top: Math.round(top), left: Math.round(left) };
 }

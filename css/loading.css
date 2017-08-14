@@ -7,3 +7,22 @@
     width: 100%;
     background-color: #009dff;
 }
+
+.loader {
+    height: 50px;
+    width: 50px;
+    margin: auto;
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
