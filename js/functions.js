@@ -20,7 +20,6 @@ function renderMap(id) {
 
     g = svg.append("g");
 
-
     d3.json("GeoJSON/" + id, function(error, map) {
         if (error) {
             return false;
@@ -158,8 +157,12 @@ function doesFileExist(urlToFile) {
 }
 
 function showInfo() {
+
+    //everything is hidden and default, unless otherwise said.
+
     $("path").css({ "fill": defaultcolor });
     $("#tooltip-container").hide();
+
     if (outOfSVG) {
         $("#tooltip-container").hide();
         if (zoomedIn) {
@@ -177,20 +180,15 @@ function showInfo() {
         $(this).css({ "fill": "#DDD" });
 
     } else if (hoveredOld == this && outOfSVG) {
-        if (zoomedIn) {
-            $(clickedDOM).css({ "fill": "#ff8a00" });
-            $("#tooltip-container").hide();
-        }
         //Hovered out of the svg
         $(this).css({ "fill": "#DDD" });
-        $("#tooltip-container").hide();
-
     } else {
         //not hovered => at the begining of the function it's filled with default color;
         if (zoomedIn) {
             $(clickedDOM).css({ "fill": "#ff8a00" });
             $("#tooltip-container").hide();
         }
+
         hoveredOld = null;
     }
 
