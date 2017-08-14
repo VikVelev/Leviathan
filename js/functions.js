@@ -133,6 +133,7 @@ function clicked(d) {
         success: function(data) {
             for (var id in data.query != undefined ? data.query.pages : "") {
                 $(".title,.description").fadeOut(100, function() {
+                    console.log(data);
                     $(".title").text(currentState.properties.LABEL);
                     try {
                         $(".description").text(data.query.pages[id].revisions[0].content);
