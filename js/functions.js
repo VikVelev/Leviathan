@@ -32,7 +32,7 @@ function renderMap(id) {
                 .append("path")
                 .attr("d", path)
                 .attr("class", "states")
-                .attr("country", function(map) { return map.properties.LABEL + ", " + map.properties.COUNTRY; })
+                .attr("country", function(map) { return map.properties.LABEL + (map.properties.COUNTRY ? ", " + map.properties.COUNTRY : " "); })
                 .on("click", clicked)
                 .on("mouseout", mouseOut)
                 .on("mouseover", showInfo);
@@ -162,8 +162,10 @@ function showInfo() {
     $("#tooltip-container").hide();
     if (outOfSVG) {
         $("#tooltip-container").hide();
-    } else
-    if (hoveredOld != this) {
+        if (zoomedIn) {
+            $(clickedDOM).css({ "fill": "#ff8a00" });
+        }
+    } else if (hoveredOld != this) {
         if (zoomedIn) {
             $(clickedDOM).css({ "fill": "#ff8a00" });
             $("#tooltip-container").hide();
@@ -175,6 +177,10 @@ function showInfo() {
         $(this).css({ "fill": "#DDD" });
 
     } else if (hoveredOld == this && outOfSVG) {
+        if (zoomedIn) {
+            $(clickedDOM).css({ "fill": "#ff8a00" });
+            $("#tooltip-container").hide();
+        }
         //Hovered out of the svg
         $(this).css({ "fill": "#DDD" });
         $("#tooltip-container").hide();

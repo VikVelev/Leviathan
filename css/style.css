@@ -145,6 +145,7 @@ body {
     color: #ff8a00;
     font-size: 4em;
     text-shadow: 1px 1.5px 0px #333;
+    user-select: none;
 }
 
 #tooltip-container {
