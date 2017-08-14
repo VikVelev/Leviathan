@@ -1,6 +1,7 @@
-//Creating the projection, gotta think of a way to dynamically resize it.
-//get all available years
+//get all available years 
+//did this with the magic numbers two lines below this to optimize loading time
 for (let i = 0; i < 67; i++) {
+    if (i == 66) id = 1959;
     while (doesFileExist("GeoJSON/" + id) != true) {
         id++;
     }
