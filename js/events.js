@@ -2,7 +2,7 @@
 $('input[type="range"]').change(function() {
     $(".sideBar").animate({ "width": "0" }, animationLength);
 
-    currentJSON = $("input[type=\"range\"").val();
+    currentJSON = $("input[type=\"range\"]").val();
     let currentJSON_Int = parseInt(currentJSON);
 
     if (/^\d+$/.test(currentJSON)) {
