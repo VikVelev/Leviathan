@@ -10,3 +10,5 @@ let animationLength = 300;
 let clickedDOM;
 let hoveredOld;
 let zoomedIn;
+let possibleYears = [];
+let id = parseInt(currentJSON) - 1;

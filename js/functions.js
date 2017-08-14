@@ -27,8 +27,11 @@ function renderMap(id) {
         id = 1959;
         console.log("There has been no changes since 1959.");
     } else {
-        while (doesFileExist("GeoJSON/" + id) != true) {
-            id--;
+        for (let i = 0; i < possibleYears.length; i++) {
+            if (id > possibleYears[i] && id < possibleYears[i + 1]) {
+                id = possibleYears[i];
+                break;
+            }
         }
     }
 
