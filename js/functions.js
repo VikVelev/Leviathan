@@ -27,7 +27,7 @@ function renderMap(id) {
         id = 1959;
         console.log("There has been no changes since 1959.");
     } else {
-        while (doesFileExist("/GeoJSON/" + id) != true) {
+        while (doesFileExist("GeoJSON/" + id) != true) {
             id--;
         }
     }
