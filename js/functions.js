@@ -148,9 +148,9 @@ function clicked(d) {
         success: function(data) {
             for (var id in data.query != undefined ? data.query.pages : "") {
                 $(".title,.description").fadeOut(100, function() {
-                    $(".title").text(currentState.properties.LABEL);
                     $(".description").text("");
                     try {
+                        $(".title").text(currentState.properties.LABEL);
                         let content = data.query.pages[id].extract;
                         $(".description").text(content);
                         $(".description").parent().css({ "overflow": "auto" });
@@ -219,7 +219,6 @@ function showInfo() {
             $(clickedDOM).css({ "fill": "#ff8a00" });
             $("#tooltip-container").hide();
         }
-
         hoveredOld = null;
     }
 
@@ -230,7 +229,6 @@ function showInfo() {
 }
 
 function mouseOut() {
-    console.log("Out");
     outOfSVG = true;
     showInfo();
 }
