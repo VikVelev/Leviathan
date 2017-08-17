@@ -125,25 +125,40 @@ function clicked(d) {
 
     let wikiData;
     let LABEL = currentState != undefined ? currentState.properties.LABEL.toString().replace(/ /g, "_ ") : "";
+    //this is shit
+    let regex = /^(AL|Alabama|alabama|AK|Alaska|alaska|AZ|Arizona|arizona|AR|Arkansas|arkansas|CA|California|california|CO|Colorado|colorado|CT|Connecticut|connecticut|DE|Delaware|delaware|FL|Florida|florida|GA|Georgia|georgia|HI|Hawaii|hawaii|ID|Idaho|idaho|IL|Illinois|illinois|IN|Indiana|indiana|IA|Iowa|iowa|KS|Kansas|kansas|KY|Kentucky|kentucky|LA|Louisiana|louisiana|ME|Maine|maine|MD|Maryland|maryland|MA|Massachusetts|massachusetts|MI|Michigan|michigan|MN|Minnesota|minnesota|MS|Mississippi|mississippi|MO|Missouri|missouri|MT|Montana|montana|NE|Nebraska|nebraska|NV|Nevada|nevada|NH|New Hampshire|new hampshire|NJ|New Jersey|new jersey|NM|New Mexico|new mexico|NY|New York|new york|NC|North Carolina|new carolina|ND|North Dakota|north dakota|OH|Ohio|ohio|OK|Oklahoma|oklahoma|OR|Oregon|oregon|PA|Pennsylvania|pennsylvania|RI|Rhode Island|rhode island|SC|South Carolina|south carolina|SD|South Dakota|south dakota|TN|Tennessee|tennessee|TX|Texas|texas|UT|Utah|utah|VT|Vermont|vermont|VA|Virginia|virginia|WA|Washington|washington|WV|West Virginia|west virginia|WI|Wisconsin|wisconsin|WY|Wyoming|wyoming)$/;
 
+    if (LABEL == "Georgia") {
+        LABEL = "Georgia_ state";
+    }
+    if (LABEL == "New_ York") {
+        LABEL = "New_ York_ (state)";
+    }
+    if (LABEL == "Colony_ of_ Louisiana") {
+        LABEL = "Louisiana_(New_Spain)";
+    }
+    if (LABEL == "Viceroyalty_ of_ New_ Spain") {
+        LABEL = "New_Spain";
+    }
     $.ajax({
-        url: 'https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&formatversion=2&titles=' + LABEL,
-        dataType: "jsonp",
+        //'https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&formatversion=2&titles=' + LABEL,
+        url: "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&exsectionformat=plain&format=json&titles=" + LABEL,
+        dataType: "json",
         type: "get",
         success: function(data) {
             for (var id in data.query != undefined ? data.query.pages : "") {
                 $(".title,.description").fadeOut(100, function() {
-                    console.log(data);
                     $(".title").text(currentState.properties.LABEL);
+                    $(".description").text("");
                     try {
-                        $(".description").text(data.query.pages[id].revisions[0].content);
-                    } catch (ex) {
-                        console.log("There was an error, please contact me at github.com/VikVelev");
-                    }
+                        let content = data.query.pages[id].extract;
+                        $(".description").text(content);
+                        $(".description").parent().css({ "overflow": "auto" });
+                    } catch (ex) {}
                 }).fadeIn(200);
             }
             wikiData = data;
-        }
+        },
     });
 }
 

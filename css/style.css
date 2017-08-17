@@ -97,14 +97,16 @@ body {
 }
 
 .description {
+    z-index: 2;
     text-align: center;
     font-size: 0.8em;
     color: white;
     margin-left: 10px;
     margin-right: 10px;
     margin-bottom: 20px;
-    /* overflow: scroll;
-    overflow-x: hidden; */
+    white-space: wrap;
+    overflow: auto;
+    overflow-x: hidden;
 }
 
 #title_img {
