@@ -167,3 +167,7 @@ body {
     size: 1em;
     color: #fff;
 }
+
+path[initials="US"] {
+    fill: #FF6900;
+}

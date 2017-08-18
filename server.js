@@ -11,7 +11,7 @@ const server = new Hapi.Server({
         }
     }
 });
-server.connection({ host: "localhost", port: 6969 });
+server.connection({ host: "localhost", port: 1337 });
 
 server.register(Inert, () => {});
 
@@ -28,7 +28,6 @@ server.route({
 });
 
 server.start((err) => {
-
     if (err) {
         throw err;
     }

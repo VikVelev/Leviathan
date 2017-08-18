@@ -34,7 +34,6 @@ function renderMap(id) {
             }
         }
     }
-
     d3.json("GeoJSON/" + id, function(error, map) {
         if (error) {
             return false;
@@ -46,7 +45,12 @@ function renderMap(id) {
                 .append("path")
                 .attr("d", path)
                 .attr("class", "states")
-                .attr("country", function(map) { return map.properties.LABEL + (map.properties.COUNTRY ? ", " + map.properties.COUNTRY : " "); })
+                .attr("country", function(map) {
+                    return map.properties.LABEL + (map.properties.COUNTRY ? ", " + map.properties.COUNTRY : " ");
+                })
+                .attr("initials", function(map) {
+                    return map.properties.COUNTRY;
+                })
                 .on("click", clicked)
                 .on("mouseout", mouseOut)
                 .on("mouseover", showInfo);
@@ -60,12 +64,13 @@ function clicked(d) {
     currentState = d;
 
     clickedDOM = this;
+
     $("path").css({ "fill": defaultcolor });
-    if (currentState == centered) {
-        $("path").css({ "fill": defaultcolor });
-    } else {
+    $('path[initials="US"]').css({ "fill": "#FF6900" });
+
+    if (currentState != centered) {
+        $('path[initials="US"]').css({ "fill": "#FF6900" });
         $(this).css({ "fill": "#ff8a00" });
-        $(this).css({ "box-shadow": "inset 10px 10px 10px 10px #666" });
     }
 
     let x, y, k;
@@ -74,12 +79,8 @@ function clicked(d) {
 
         let centroid = path.centroid(currentState);
 
-        //console.log(centroid);
-
         x = centroid[0];
         y = centroid[1];
-
-        //console.log(x, y);
 
         k = 4;
 
@@ -125,6 +126,7 @@ function clicked(d) {
 
     let wikiData;
     let LABEL = currentState != undefined ? currentState.properties.LABEL.toString().replace(/ /g, "_ ") : "";
+
     //this is shit
     let regex = /^(AL|Alabama|alabama|AK|Alaska|alaska|AZ|Arizona|arizona|AR|Arkansas|arkansas|CA|California|california|CO|Colorado|colorado|CT|Connecticut|connecticut|DE|Delaware|delaware|FL|Florida|florida|GA|Georgia|georgia|HI|Hawaii|hawaii|ID|Idaho|idaho|IL|Illinois|illinois|IN|Indiana|indiana|IA|Iowa|iowa|KS|Kansas|kansas|KY|Kentucky|kentucky|LA|Louisiana|louisiana|ME|Maine|maine|MD|Maryland|maryland|MA|Massachusetts|massachusetts|MI|Michigan|michigan|MN|Minnesota|minnesota|MS|Mississippi|mississippi|MO|Missouri|missouri|MT|Montana|montana|NE|Nebraska|nebraska|NV|Nevada|nevada|NH|New Hampshire|new hampshire|NJ|New Jersey|new jersey|NM|New Mexico|new mexico|NY|New York|new york|NC|North Carolina|new carolina|ND|North Dakota|north dakota|OH|Ohio|ohio|OK|Oklahoma|oklahoma|OR|Oregon|oregon|PA|Pennsylvania|pennsylvania|RI|Rhode Island|rhode island|SC|South Carolina|south carolina|SD|South Dakota|south dakota|TN|Tennessee|tennessee|TX|Texas|texas|UT|Utah|utah|VT|Vermont|vermont|VA|Virginia|virginia|WA|Washington|washington|WV|West Virginia|west virginia|WI|Wisconsin|wisconsin|WY|Wyoming|wyoming)$/;
 
@@ -140,6 +142,7 @@ function clicked(d) {
     if (LABEL == "Viceroyalty_ of_ New_ Spain") {
         LABEL = "New_Spain";
     }
+    //end of shit
     $.ajax({
         //'https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&formatversion=2&titles=' + LABEL,
         url: "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&exsectionformat=plain&format=json&titles=" + LABEL,
@@ -190,16 +193,19 @@ function doesFileExist(urlToFile) {
 function showInfo() {
 
     //everything is hidden and default, unless otherwise said.
-
     $("path").css({ "fill": defaultcolor });
     $("#tooltip-container").hide();
 
     if (outOfSVG) {
         $("#tooltip-container").hide();
+        $('path[initials="US"]').css({ "fill": "#FF6900" });
+
         if (zoomedIn) {
             $(clickedDOM).css({ "fill": "#ff8a00" });
         }
+
     } else if (hoveredOld != this) {
+        $('path[initials="US"]').css({ "fill": "#FF6900" });
         if (zoomedIn) {
             $(clickedDOM).css({ "fill": "#ff8a00" });
             $("#tooltip-container").hide();
@@ -212,6 +218,7 @@ function showInfo() {
 
     } else if (hoveredOld == this && outOfSVG) {
         //Hovered out of the svg
+        $('path[initials="US"]').css({ "fill": "#FF6900" });
         $(this).css({ "fill": "#DDD" });
     } else {
         //not hovered => at the begining of the function it's filled with default color;
