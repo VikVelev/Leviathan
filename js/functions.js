@@ -239,3 +239,4 @@ function mouseOut() {
     outOfSVG = true;
     showInfo();
 }
+
