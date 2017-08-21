@@ -147,6 +147,7 @@ function clicked(d) {
         //'https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&formatversion=2&titles=' + LABEL,
         url: "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&exsectionformat=plain&format=json&titles=" + LABEL,
         dataType: "json",
+        Access-Control-Allow-Headers: *,
         type: "get",
         success: function(data) {
             for (var id in data.query != undefined ? data.query.pages : "") {
