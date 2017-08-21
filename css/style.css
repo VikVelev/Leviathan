@@ -99,7 +99,7 @@ body {
 .description {
     z-index: 2;
     text-align: center;
-    font-size: 0.8em;
+    font-size: 2vh;
     color: white;
     margin-left: 10px;
     margin-right: 10px;
