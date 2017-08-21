@@ -145,7 +145,7 @@ function clicked(d) {
     //end of shit
     $.ajax({
         //'https://en.wikipedia.org/w/api.php?action=query&prop=revisions&rvprop=content&format=json&formatversion=2&titles=' + LABEL,
-        url: "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&exsectionformat=plain&format=json&titles=" + LABEL,
+        url: "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&explaintext&exsectionformat=plain&format=json&origin=*&titles=" + LABEL,
         dataType: "json",
         type: "get",
         success: function(data) {
